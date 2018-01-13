@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!--      ______  ______     _____
+         / __  / / _   /  /____/ 
+        / / /_/ / / /_/  / /__   
+        _\ \    _\ \    / __ /  
+      / /_/ / / /_/ /  / /___
+     /_____/ /_____/  /_____/
+	 
+	 Storms Software Engineering - Brayden Storms 
+	 Initial Creation Date: 1-12-18
+	 Updated:1-12-18
+-->	
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Tiny Shop Creations T-Shirt Calculator</title>
+	
+	<style type="text/css">
+		html {
+			background: #f9f9f9;
+		}
+		body {
+			background: #fff;
+			color: #333;
+			font-family: sans-serif;
+			/*margin: 2em auto;*/
+			padding: 1em 2em;
+			-webkit-border-radius: 3px;
+			/*border-radius: 15px;*/
+			border: 1px solid #dfdfdf;
+			max-width: 1500px;
+		}
+		h1 {
+			border-bottom: 1px solid #dadada;
+			clear: both;
+			color: #666;
+			font: 24px Georgia, "Times New Roman", Times, serif;
+			margin: 30px 0 0 0;
+			padding: 0;
+			padding-bottom: 7px;
+		}
+		#error-page {
+			margin-top: 50px;
+		}
+		#error-page p {
+			font-size: 14px;
+			line-height: 1.5;
+			margin: 25px 0 20px;
+		}
+		#error-page code {
+			font-family: Consolas, Monaco, monospace;
+		}
+		ul li {
+			margin-bottom: 10px;
+			font-size: 14px ;
+		}
+		a {
+			color: #21759B;
+			text-decoration: none;
+		}
+		a:hover {
+			color: #D54E21;
+		}
+		.input
+		{
+		width:200px;
+		margin:5px;
+		}
+		table
+		{
+		font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+		width:100%;
+		border-collapse:collapse;
+		}
+		table td, table th 
+		{
+		font-size:1em;
+		border:1px solid #3385D6;
+		padding:3px 7px 2px 7px;
+		}
+		table th 
+		{
+		font-size:1.1em;
+		text-align:left;
+		padding-top:5px;
+		padding-bottom:4px;
+		background-color:#0066CC;/*;A7C942*/
+		color:#ffffff;
+		}
+		table tr.alt td 
+		{
+		color:#000000;
+		background-color:#EAF2D3;
+		}
+		.smallInput
+		{
+		width:15px;
+		float:right;
+		margin-right:23%;
+		}
+		.medTableInput
+		{
+		width:50px;
+		float:right;
+		margin-right:23%;
+		}
+		.medInput
+		{
+		width:50px;
+		}
+		.checkbox
+		{
+		float:right;
+		margin-right:32%;
+		}
+		.total
+		{
+			float:right;
+			position:relative;
+			width:10%;
+		}
+			</style>
+</head>
+<body onload="calc();">
+<h1>Tiny Shop Creations T Shirt Calculator</h1>
+<br>
+<div>
+<!--Where the user picks stuff -->
+Number of Transfers: <input type="number" class="medInput" id="numTransfers">
+Number of colors:<input type="number" class="medInput" id="numColors"><br>
+Number of T-Shirts:<input type="number" class="input" id="numShirts"> 
+Number of Sweatshirts:<input type="number" class="input" id="numSShirts"> 
+<form action="">
+  One sided<input type="radio" name="sides" value="1sided"><br>
+  Two sided<input type="radio" name="sides" value="2sided">
+</form>
+</br></br>
+
+<!--Table showing breakdown of costs-->
+<h2>Costs Breakdown</h2>
+<table id="children">
+<tr>
+  <th>Transfers + $50 Shipping</th>
+  <th>T-Shirt </th>
+  <th>Sweatshirt<br></th>
+  <th>Profit for T-Shirts (50%)</th>
+  <th>Profit for Sweatshirts (35%)</th>
+  <th>Total<br></th>
+</tr>
+<tr>
+  <th></th>
+  <th></th>
+  <th></th>
+  <th></th>
+  <th></th>
+  <th></th>
+</tr>
+</table>
+
+</br></br>
+<!--
+<table class="total">
+<tr>
+	<td>Grand Total</td>
+	<td>$<span id="grandTotal">0</span></td>
+</tr>
+</table><br>-->
+<script type="text/javascript">
+	function grabElement(id)
+	{
+	var value = document.getElementById(id).value;
+	return value.replace("&","and");	
+	}
+	function submit()
+	{
+		var table = document.getElementById("children");
+		var rows = table.rows;
+		//Variables for the request
+		var childsName = "";
+		var age = "";
+		var gender = "";
+		var grade = "";
+		var bDay = "";
+		var dues = "";
+		var book = "";
+		var sparksUniform = "";
+		var tUniform = "";
+		var bag = "";
+		var other = "";
+		var pg = grabElement("pg");
+		var broughtBy = grabElement("broughtBy");
+		var address = grabElement("address");
+		var city = grabElement("city");
+		var cell = grabElement("cell");
+		var phone = grabElement("phone");
+		var email = grabElement("email");
+		var church = grabElement("church");
+		document.getElementById("message").innerHTML = "One moment...";
+		for(var i=1;i<table.rows.length;i++)
+		{
+			var cells = rows[i].cells;
+			childsName = cells[0].childNodes[0].value;
+			age = cells[1].childNodes[0].value;
+			gender = cells[2].childNodes[0].checked;
+			if(gender==false)
+				gender="Female";
+			else
+				gender="Male";
+			grade = cells[3].childNodes[0].value;
+			bDay = cells[4].childNodes[0].value;
+			dues = cells[5].childNodes[0].checked.toString();
+			book = cells[6].childNodes[0].checked.toString();
+			sparksUniform = cells[7].childNodes[0].checked.toString();
+			tUniform = cells[8].childNodes[0].checked.toString();
+			bag = cells[9].childNodes[0].checked.toString();
+			other = cells[10].childNodes[0].value;
+			var xmlhttp;
+			if (window.XMLHttpRequest)
+			{// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+			}
+			else
+			{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xmlhttp.onreadystatechange=function()
+			{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+				{
+				document.getElementById("message").innerHTML += ".";
+				}
+			}
+			xmlhttp.open("GET",("form_action.php?childsName="+childsName+"&age="+age+"&gender="+
+			gender+"&grade="+grade+"&bDay="+bDay+"&dues="+dues+"&book="+
+			book+"&sparksUniform="+sparksUniform+"&tUniform="+tUniform+"&bag="+bag+"&other="+other+"&pg="+
+			pg+"&broughtBy="+broughtBy+"&address="+address+"&city="+city+"&cell="+cell+"&phone="+phone+
+			"&email="+email+"&church="+church).replace("'","").replace("\"",""),false);
+			xmlhttp.send();
+		}
+		alert("Remember this number: "+document.getElementById("grandTotal").innerHTML);
+	location.replace("http://www.soldotnabiblechapel.com/awana-registration#content");
+	}
+	function changeTotal(add,a)
+	{
+		var grandTotal = document.getElementById("grandTotal");
+		var amount = parseInt(a);
+		var previousAmount = parseInt(grandTotal.innerHTML);
+		if(add)
+		{
+		grandTotal.innerHTML = (amount+previousAmount).toString();
+		}
+		else
+		{
+			grandTotal.innerHTML = (previousAmount-amount).toString();
+		}
+	}
+	function addChild()
+	{
+	var table = document.getElementById("children");
+	var row=table.insertRow(-1);
+	row.insertCell(0).innerHTML = '<input type="text" style="float:right;margin-right:12%;" name="childsName">';
+	row.insertCell(1).innerHTML = '<input type="text" class="smallInput" name="age">';
+	row.insertCell(2).innerHTML = '<form>M<input type="radio" class="smallInput" value="male" name="M"><br>F<input type="radio" class="smallInput" value="female" name="F"></form>';
+	row.insertCell(3).innerHTML = '<input type="text" class="smallInput" name="grade">';
+	row.insertCell(4).innerHTML= '<input type="text" class="medTableInput" name="B-day">';
+	row.insertCell(5).innerHTML = '<input type="checkbox" class="checkbox" onchange="changeTotal(this.checked,25)" name="dues">';
+	row.insertCell(6).innerHTML = '<input type="checkbox" class="checkbox" onchange="changeTotal(this.checked,10)" name="book">';
+	row.insertCell(7).innerHTML = '<input type="checkbox" style="float:right;margin-right:50%;" onchange="changeTotal(this.checked,10)" onchange="" name="sUniform">';
+	row.insertCell(8).innerHTML =  '<input type="checkbox" style="float:right;margin-right:40%;" onchange="changeTotal(this.checked,15)" name="tUniform">';
+	row.insertCell(9).innerHTML =  '<input type="checkbox" class="checkbox" name="bag" onchange="changeTotal(this.checked,5)">';
+	row.insertCell(10).innerHTML = '<input type="text" style="float:right;margin-right:3%;" name="other">';
+	}
+	function calc()
+	{
+	
+	}
+	</script>
+</div>
+</html>
